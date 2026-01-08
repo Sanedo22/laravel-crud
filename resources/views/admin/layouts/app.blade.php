@@ -51,8 +51,10 @@
 <script src="{{ asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('admin/js/sb-admin-2.min.js') }}"></script>
 
-@stack('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@include('sweetalert::alert')
 
+@stack('scripts')
 </body>
 </html>
 
