@@ -55,22 +55,39 @@ $(document).ready(function () {
 // Event delegation for Delete button
 $(document).on('click', '.delete-btn', function() {
     var id = $(this).data('id');
-    if (!confirm('Are you sure you want to delete this teacher?')) {
-        return;
-    }
-
-    $.ajax({
-        url: '/admin/teachers/' + id,
-        type: 'DELETE',
-        data: {
-            _token: '{{ csrf_token() }}'
-        },
-        success: function () {
-            alert('Teacher deleted');
-            $('#teachers-table').DataTable().ajax.reload();
-        },
-        error: function () {
-            alert('Something went wrong');
+    
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/admin/teachers/' + id,
+                type: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function () {
+                    Swal.fire(
+                        'Deleted!',
+                        'Teacher has been deleted.',
+                        'success'
+                    );
+                    $('#teachers-table').DataTable().ajax.reload();
+                },
+                error: function () {
+                    Swal.fire(
+                        'Error!',
+                        'Something went wrong.',
+                        'error'
+                    );
+                }
+            });
         }
     });
 });

@@ -2,37 +2,77 @@
 
 @section('content')
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<form action="{{route('students-update', $students->id)}}" method="POST">
-    @csrf
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" value="{{$students->name}}">
-    @if ($errors->has('name'))
-        @error('name')
-        {{$message}}
-    @enderror
-    @endif
-    <br><br>
+<div class="container mt-5">
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" value="{{$students->email}}">
-    @if ($errors->has('email'))
-        @error('email')
-        {{$message}}
-    @enderror
-    @endif<br><br>
+    <h2 class="mb-4 text-center">Edit Student</h2>
 
+    <div class="card shadow-sm">
+        <div class="card-body">
 
-    <label for="age">Age:</label>
-    <input type="number" id="age" name="age" value="{{$students->age}}">
-    @if ($errors->has('age'))
-        @error('age')
-        {{$message}}
-    @enderror
-    @endif<br><br>
+            <form action="{{ route('students-update', $students->id) }}" method="POST">
+                @csrf
 
-    <button type="submit">Update Student</button>
+                {{-- Name --}}
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        class="form-control @error('name') is-invalid @enderror"
+                        value="{{ old('name', $students->name) }}"
+                    >
+                    @error('name')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
 
- </form>
+                {{-- Email --}}
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="form-control @error('email') is-invalid @enderror"
+                        value="{{ old('email', $students->email) }}"
+                    >
+                    @error('email')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
 
- @endsection
+                {{-- Age --}}
+                <div class="mb-3">
+                    <label for="age" class="form-label">Age</label>
+                    <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        class="form-control @error('age') is-invalid @enderror"
+                        value="{{ old('age', $students->age) }}"
+                    >
+                    @error('age')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                {{-- Buttons --}}
+                <div class="d-flex justify-content-between">
+                    <a href="{{ route('students-index') }}" class="btn btn-secondary">
+                        Back
+                    </a>
+
+                    <button type="submit" class="btn btn-primary px-4">
+                        Update Student
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+@endsection
