@@ -7,22 +7,14 @@ use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Redirect root to admin dashboard
-|--------------------------------------------------------------------------
-*/
+// Initial landing logic: move to dashboard
 
 Route::get('/', function () {
     return redirect()->route('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
-/*
-|--------------------------------------------------------------------------
-| Admin Dashboard
-|--------------------------------------------------------------------------
-*/
+// Dashboard data aggregation
 Route::get('/admin/dashboard', function () {
     $studentCount = Student::count();
     $teacherCount = Teacher::count();
@@ -31,11 +23,7 @@ Route::get('/admin/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('admin.dashboard');
 
 
-/*
-|--------------------------------------------------------------------------
-| Authenticated Routes
-|--------------------------------------------------------------------------
-*/
+// Core auth layer (Breeze)
 Route::middleware('auth')->group(function () {
 
     // Profile (Breeze)
@@ -44,11 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Admin Routes
-    |--------------------------------------------------------------------------
-    */
+    // Prefix all routes with /admin
     Route::prefix('admin')->group(function () {
 
         // =====================
@@ -59,6 +43,18 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/students/data', [StudentController::class, 'data'])
             ->name('students-data');
+
+        Route::get('/students/trashed', [StudentController::class, 'trashed'])
+            ->name('students-trashed');
+
+        Route::get('/students/trashed-data', [StudentController::class, 'trashedData'])
+            ->name('students-trashed-data');
+
+        Route::post('/students/{id}/restore', [StudentController::class, 'restore'])
+            ->name('students-restore');
+
+        Route::delete('/students/{id}/force-delete', [StudentController::class, 'forceDelete'])
+            ->name('students-force-delete');
 
         Route::get('/students/create', function () {
             return view('admin.students.create');
@@ -86,6 +82,18 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/teachers/data', [TeacherController::class, 'data'])
             ->name('teachers-data');
+
+        Route::get('/teachers/trashed', [TeacherController::class, 'trashed'])
+            ->name('teachers-trashed');
+
+        Route::get('/teachers/trashed-data', [TeacherController::class, 'trashedData'])
+            ->name('teachers-trashed-data');
+
+        Route::post('/teachers/{id}/restore', [TeacherController::class, 'restore'])
+            ->name('teachers-restore');
+
+        Route::delete('/teachers/{id}/force-delete', [TeacherController::class, 'forceDelete'])
+            ->name('teachers-force-delete');
 
         Route::get('/teachers/create', function () {
             return view('admin.teachers.create');
