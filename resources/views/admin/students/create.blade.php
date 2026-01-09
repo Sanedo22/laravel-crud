@@ -8,7 +8,7 @@
     <div class="card shadow-sm">
         <div class="card-body">
 
-            <form action="{{ route('students-store') }}" method="POST">
+            <form action="{{ route('students-store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 {{-- Name --}}
@@ -55,6 +55,20 @@
                         placeholder="Enter age"
                     >
                     @error('age')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                {{-- Image --}}
+                <div class="mb-3">
+                    <label for="image" class="form-label">Profile Image</label>
+                    <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        class="form-control @error('image') is-invalid @enderror"
+                    >
+                    @error('image')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>

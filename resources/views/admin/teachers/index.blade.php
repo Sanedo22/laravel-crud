@@ -17,6 +17,7 @@
     <thead>
         <tr>
             <th>SL</th>
+            <th>Image</th>
             <th>Name</th>
             <th>Email</th>
             <th>Subject</th>
@@ -42,6 +43,7 @@ $(document).ready(function () {
         ajax: "{{ route('teachers-data') }}",
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+            { data: 'image', name: 'image', orderable: false, searchable: false },
             { data: 'name', name: 'name' },
             { data: 'email', name: 'email' },
             { data: 'subject', name: 'subject' },

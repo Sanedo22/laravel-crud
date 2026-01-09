@@ -9,7 +9,7 @@
     <div class="card shadow-sm">
         <div class="card-body">
 
-            <form action="{{ route('students-update', $students->id) }}" method="POST">
+            <form action="{{ route('students-update', $students->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 {{-- Name --}}
@@ -55,6 +55,27 @@
                     @error('age')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+                </div>
+
+                {{-- Image --}}
+                <div class="mb-3">
+                    <label for="image" class="form-label">Profile Image</label>
+                    <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        class="form-control @error('image') is-invalid @enderror"
+                    >
+                    @error('image')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+
+                    @if($students->image)
+                        <div class="mt-2">
+                            <p>Current Image:</p>
+                            <img src="{{ asset('storage/' . $students->image) }}" width="100" class="img-thumbnail" alt="Student Image">
+                        </div>
+                    @endif
                 </div>
 
                 {{-- Buttons --}}
